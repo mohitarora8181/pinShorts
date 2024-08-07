@@ -47,11 +47,11 @@ import kotlinx.coroutines.withContext
 
 
 @Composable
-fun BookMarks(navController: NavController) {
-    val newsDao =  MainApplication.newsDatabase.getNewsDao()
+fun BookMarks(navController: NavController,getDatabaseInstant:NewsDataDao) {
+//    val newsDao =  MainApplication.newsDatabase.getNewsDao()
 
     suspend fun getData():List<NewsResultEntity> = withContext(Dispatchers.IO){
-        newsDao.getBookmarks()
+        getDatabaseInstant.getBookmarks()
     }
     val deleteScope = rememberCoroutineScope()
 
@@ -65,7 +65,7 @@ fun BookMarks(navController: NavController) {
 
     fun deleteBookMark():(Int)->Unit = {id->
         deleteScope.launch(Dispatchers.IO) {
-            newsDao.deleteBookMark(id)
+            getDatabaseInstant.deleteBookMark(id)
         }
         data.value = data.value.filterNot { it.id == id }
     }

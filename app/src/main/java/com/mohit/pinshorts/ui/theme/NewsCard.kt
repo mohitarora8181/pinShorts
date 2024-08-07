@@ -28,14 +28,15 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.mohit.pinshorts.MainApplication
+import com.mohit.pinshorts.db.NewsDataDao
 import com.mohit.pinshorts.entities.NewsResultEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
-fun NewsCard(data: NewsResult,navController: NavController,showToast:()->Unit){
+fun NewsCard(data: NewsResult,navController: NavController,showToast:()->Unit,getDatabaseInstant:NewsDataDao){
 
-    val newsDao = MainApplication.newsDatabase.getNewsDao()
+
     val addCoroutine = rememberCoroutineScope()
 
     Column(
@@ -77,7 +78,7 @@ fun NewsCard(data: NewsResult,navController: NavController,showToast:()->Unit){
                     .clickable(
                         onClick = {
                             addCoroutine.launch(Dispatchers.IO) {
-                                newsDao.addBookmark(
+                                getDatabaseInstant.addBookmark(
                                     NewsResultEntity(
                                         title = data.title,
                                         link = data.link,

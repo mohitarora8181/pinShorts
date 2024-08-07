@@ -13,12 +13,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.mohit.pinshorts.db.NewsDatabase
 import com.mohit.pinshorts.pages.BookMarks
 import com.mohit.pinshorts.pages.Home
 import com.mohit.pinshorts.pages.NewsDetails
 import com.mohit.pinshorts.ui.theme.PinShortsTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var getDatabaseInstant:NewsDatabase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -29,10 +34,10 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController =  navController, startDestination = "home" ){
                         composable(route = Screens.HomeScreen.route){
-                            Home(navController)
+                            Home(navController,getDatabaseInstant.getNewsDao())
                         }
                         composable(route = Screens.BookmarksScreen.route){
-                            BookMarks(navController)
+                            BookMarks(navController,getDatabaseInstant.getNewsDao())
                         }
                         composable(route = Screens.NewsDetailsScreen.route,
                             arguments = listOf(

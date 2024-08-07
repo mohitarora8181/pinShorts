@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.mohit.pinshorts.db.NewsDataDao
 import com.mohit.pinshorts.entities.NewsData
 import com.mohit.pinshorts.ui.theme.NewsCard
 import io.ktor.client.HttpClient
@@ -31,7 +32,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.serialization.kotlinx.json.json
 
 @Composable
-fun Home(navController: NavController){
+fun Home(navController: NavController,getDatabaseInstant:NewsDataDao){
 
     val context = LocalContext.current
 
@@ -90,7 +91,7 @@ fun Home(navController: NavController){
         if(data.value?.news_results != null){
             LazyColumn (modifier=Modifier.padding(horizontal = 15.dp)) {
                 items(data.value!!.news_results){
-                    NewsCard(data = it,navController, showToast = { showToast() })
+                    NewsCard(data = it,navController, showToast = { showToast() },getDatabaseInstant)
                 }
             }
         }
